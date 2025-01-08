@@ -99,7 +99,9 @@ kotlin {
                     }
                 }
                 abiList.forEach {
-                    from("$libPathForAndroid/$it") {
+                    from("$libPathForAndroid/$it/python$libVersion") {
+                        exclude("config-$libVersion-aarch64-linux-android/")
+                        exclude("config-$libVersion-x86_64-linux-android/")
                         into("$it/lib/python$libVersion")  // python stdlib
                     }
                 }
@@ -112,7 +114,6 @@ kotlin {
                     dependsOn(copyAndroidPythonAssets)
                 }
             }
-
         }
     }
 
@@ -132,6 +133,12 @@ kotlin {
             duplicatesStrategy = DuplicatesStrategy.WARN
             from(licensePath) {
                 into("META-INF/LICENSE")
+            }
+            from(libPathForDesktop) {
+                include("windows-*/*")
+                //include("linux-*/*")
+                //include("macos-*/*")
+                into("lib")
             }
         }
     }
@@ -174,7 +181,7 @@ kotlin {
             binaries {
                 if (konanTarget.family == Family.ANDROID) {
                     sharedLib("multiplatform_python$libVersion") {
-                        linkerOpts.addAll(listOf("-L$targetLibPath/$targetABI/", "-lpython$libVersion"))
+                        linkerOpts.addAll(listOf("-L$projectDir/$targetLibPath/$targetABI/", "-lpython$libVersion"))
 
                         linkTaskProvider.configure {
                             val type = if (buildType == NativeBuildType.DEBUG) "debug" else "release"
@@ -206,7 +213,7 @@ kotlin {
         val jvmMain by creating
         val commonMain by getting
         val desktopMain by getting {
-            resources.srcDirs("src/desktopMain/resources", libPathForDesktop)
+            resources.srcDirs("src/desktopMain/resources")
         }
         val androidMain by getting
         jvmMain.dependsOn(commonMain)

@@ -1,10 +1,6 @@
 package python.multiplatform.ffi
 
-import jdk.incubator.foreign.CLinker
-import jdk.incubator.foreign.SymbolLookup
-import jdk.incubator.foreign.FunctionDescriptor
-import jdk.incubator.foreign.ResourceScope
-import jdk.incubator.foreign.ValueLayout
+import jdk.incubator.foreign.*
 import java.lang.invoke.MethodHandle
 import java.lang.invoke.MethodType
 
