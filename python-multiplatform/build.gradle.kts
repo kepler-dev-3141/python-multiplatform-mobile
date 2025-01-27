@@ -133,6 +133,10 @@ kotlin {
             from(licensePath) {
                 into("META-INF/LICENSE")
             }
+            from(libPathForDesktop) {
+                include("windows-*/*")
+                into("lib")
+            }
         }
     }
 
@@ -207,6 +211,7 @@ kotlin {
         val commonMain by getting
         val desktopMain by getting {
             resources.srcDirs("src/desktopMain/resources", libPathForDesktop)
+            resources.srcDirs("src/desktopMain/resources")
         }
         val androidMain by getting
         jvmMain.dependsOn(commonMain)
